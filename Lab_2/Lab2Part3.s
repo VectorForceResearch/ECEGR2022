@@ -10,38 +10,44 @@ varZ:   .word   2
 main:       # Start of code section
 
 # Read variables from memory to registers
-lw  s0, vari        		# Load A
-lw  s1, varZ        		# Load Z
+lw  a0, vari        		# Load i
+lw  a1, varZ        		# Load Z
+
+la  s0, vari        		# Load i
+la  s1, varZ        		# Load Z
+
 
 #for(i=0; i<=20; i=i+2){Z++;}
-add t0, zero, zero  		#load i initial into our temp
-li t1, 2			#should be loading word Z here into temp
-
-beq zero, zero, ForLoop
-
+li t1, 20
 ForLoop:
-   slti t3, t0, 20
-   beq t3, zero, DoWhile
-   addi t1, t1, 1		#z++
-   addi t0, t0, 2               #i = i + 2
+   #slti t3, a0, 20
+   #beq t3, zero, DoWhile
+   #bge a0, t1, DoWhile
+   blt t1, a0, DoWhile
+   addi a1, a1, 1		#z++
+   addi a0, a0, 2               #i = i + 2
    j ForLoop
 
 DoWhile:
-   slti t3, t1, 100
+   slti t3, a1, 100
    beq t3, zero, While
-   addi t1, t1, 1               #z++
+   
+   addi a1, a1, 1               #z++
    j DoWhile
 
 
 While:
-   slt t3, zero, t0		#because t3 is a 1 until no longer needed, recycle
+   slt t3, zero, a0		#because t3 is a 1 until no longer needed, recycle
    beq t3, zero, Exit
-   sub t1, t1, t3               #z--
-   sub t0, t0, t3               #i--
+   sub a1, a1, t3               #z--
+   sub a0, a0, t3               #i--
    j While
 
 
+
 Exit:
+   sw a0, vari,s0
+   sw a1, varZ,s1
    li  a7,10       #system call for an exit
    ecall
 

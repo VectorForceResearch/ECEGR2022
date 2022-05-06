@@ -21,6 +21,7 @@ main:       # Start of code section
     lw  s3, varD        # Load D
     lw  s4, varE        # Load E
     lw  s5, varF        # Load F
+    la  s11, varZ
 
     #z = (A-B);
     SUB t0, s0, s1
@@ -38,7 +39,7 @@ main:       # Start of code section
     SUB t0, t0, t1
 
     #store from registor to the memory variable
-    sw  s0, varZ, t0
+    sw  t0, 0(s11)
 
     li  a7,10       #system call for an exit
     ecall

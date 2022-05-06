@@ -4,7 +4,7 @@
 
 
 b:   .word   	1,2,4,8,16
-a:   .space 	5 		#could use .word 0,0,0,0,0
+a:   .word 	0,0,0,0,0
 
 .text   # Text declaration section
 
@@ -13,6 +13,7 @@ main:       # Start of code section
 # Read variables from memory to registers
 la  x10, a
 la  x12, b
+
 add x11, x0, x0
 
 while: 	slti x13, x11, 5	# check if i < 5

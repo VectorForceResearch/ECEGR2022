@@ -2,55 +2,60 @@
 
     .data   # Data declaration section
 
-a:   .word
-b:   .word
-c:   .word
+varA:   .word 0
+varB:   .word 0
+varC:   .word 0
 
 .text   # Text declaration section
 
 main:       # Start of code section
 
 # Read variables from memory to registers
-la  x10, a
-la  x11, b
-la  x12, c
+la s9, varA
+la s10, varB
+la s11, varC
 
-addi  sp, sp, -16                    #make space for 3 words on the stack
-sw    ra, 0(sp)
-sw    s0, 4(sp)
-sw    s1, 8(sp)
-sw    s2, 12(sp)
+addi ra, zero, 1010
 
-
-addi a0, zero, 5                      #set main i = 5
+li x13, 5	# int i = 5
 jal AddItUp
+mv x10, x14#, (x10) # varA now equals AddItUp
 
-addi a0, zero, 10		#set main j = 10
-jal s1, AddItUp
+li x13, 10	# int j = 10
+jal AddItUp
+mv x11, x14#, (x11) # varB now equals AddItUp
 
-add a0, s0, s1			#c=a+b
+add x12, x10, x11			#c=a+b
+
+sw x10, (s9)
+sw x11, (s10)
+sw x12, (s11)
+j Exit
 
 AddItUp:
-        add t0, zero, zero            #set local i = 0
-        add t1, zero, zero            #set local x = 0
-        jal ra, ForLoop               #call ForLoop and get computed x
+	addi sp, sp, -8                    #make space for 1 word on the stack
+	sw    s0, 0(sp)
+	sw    s1, 4(sp)
+        
+        add s0, zero, zero            #set local i = 0
+        add s1, zero, zero            #set local x = 0
 
 ForLoop:
-        slt t3, t0, a0
-        beq t3, zero, end
-        addi t2, t0, 1			#i+1
-        add  t1, t1, t2			#x = x + (i+1)
-        addi t0, t0, 1                #i++
+   	blt x13, s0, ExitFxn	# brnch less than n (where n is x13
+        addi s1, s1, 1		# x = x + 1
+        add  s1, s1, s0		# x = x + i
+        addi s0, s0, 1          # i++
         j ForLoop
 
-end:
-	mv x10, t1
+ExitFxn:
+	add x14, zero, s1  
+	lw    s0, 0(sp)
+	lw    s1, 4(sp)
+	addi sp, sp, 8                    #make space for 1 word on the stack
 	jr ra
 
+Exit:
+   #.string "Program Completed Successfully!"
+   li  a7,10       #system call for an exit
+   ecall
 
-	lw s0 0(sp)
-	lw s1 4(sp)
-	lw s2 8(sp)
-	lw ra 12(sp)
-	addi sp sp 16
-	jr ra
