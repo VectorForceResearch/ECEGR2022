@@ -96,24 +96,19 @@ begin
 -- Create two seperate register8s, then make a reg16 from two 8's, then use two 8's and a 16 to make a 32
   rg8_a: work.register8(memmy) port map(datain(7 downto 0), enout, writein, dataout(7 downto 0));
   rg8_b: work.register8(memmy) port map(datain(15 downto 8), enout, writein, dataout(15 downto 8));
-  rg8_c: work.register8(memmy) port map(datain(23 downto 16), enout, writein, dataout(23 downto 16));
-  rg8_d: work.register8(memmy) port map(datain(31 downto 24), enout, writein, dataout(31 downto 24));
-
-  --rg16: work.register8(memmy) port map(rg8_b & rg8_a, enout, writein, rg8_b & rg8_a);
-  --rg32: work.register8(memmy) port map(rg16 & rg8_b & rg8_a, enout, writein, rg16 & rg8_b & rg8_a);
+  rg16: work.register8(memmy) port map(rg8_b & rg8_a, enout, writein, rg8_b & rg8_a);
+  rg32: work.register8(memmy) port map(rg16 & rg8_b & rg8_a, enout, writein, rg16 & rg8_b & rg8_a);
 
   enoutAll <= (enout32 & enout16 & enout8); -- Concatenate the enables for the enable input
   writeinAll <= (writein32 & writein16 & writein8); -- Concatenate the enables for the write input
 
 -- Logic for wordSize
-with enoutAll select
-wordSize <= "1111" when "111"   -- whole word
-            "0111" when "011"   -- half word
+wordSize <= "1111" when enoutAll = "111" else   -- whole word
+            "0111" when enoutAll = "011" else   -- half word
 
 -- Logic for enWriteAll
-with writeinAll select
-enWriteAll <= "1111" when "111"  -- whole word
-              "0111" when "011"  -- half word
+enWriteAll <= "1111" when enoutSignal = "111" else  -- whole word
+              "0111" when enWriteAll = "011" else   -- half word
 
 end architecture biggermem;
 
@@ -156,56 +151,13 @@ architecture calc of adder_subtracter is
 
 begin
 -- insert code here.
-
-   -- Invert B for subtraction with add_sub select
-   b_num <= not datain_b when '1',
-                 datain_b when others;
-
-    -- Pass in add_sub to carry in and chain 32 1-bit fulladders together
-    -- carry(n) passes carry-out from bit n to carry-in of adder n+1
-    AS0: fulladder port map(datain_a(0), b_num(0), add_sub, dataout(0), carry(0));
-    AS1: fulladder port map(datain_a(1), b_num(1), carry(0), dataout(1), carry(1));
-    AS2: fulladder port map(datain_a(2), b_num(2), carry(1), dataout(2), carry(2));
-    AS3: fulladder port map(datain_a(3), b_num(3), carry(2), dataout(3), carry(3));
-    AS4: fulladder port map(datain_a(4), b_num(4), carry(3), dataout(4), carry(4));
-    AS5: fulladder port map(datain_a(5), b_num(5), carry(4), dataout(5), carry(5));
-    AS6: fulladder port map(datain_a(6), b_num(6), carry(5), dataout(6), carry(6));
-    AS7: fulladder port map(datain_a(7), b_num(7), carry(6), dataout(7), carry(7));
-    AS8: fulladder port map(datain_a(8), b_num(8), carry(7), dataout(8), carry(8));
-    AS9: fulladder port map(datain_a(9), b_num(9), carry(8), dataout(9), carry(9));
-    AS10: fulladder port map(datain_a(10), b_num(10), carry(9), dataout(10), carry(10));
-    AS11: fulladder port map(datain_a(11), b_num(11), carry(10), dataout(11), carry(11));
-    AS12: fulladder port map(datain_a(12), b_num(12), carry(11), dataout(12), carry(12));
-    AS13: fulladder port map(datain_a(13), b_num(13), carry(12), dataout(13), carry(13));
-    AS14: fulladder port map(datain_a(14), b_num(14), carry(13), dataout(14), carry(14));
-    AS15: fulladder port map(datain_a(15), b_num(15), carry(14), dataout(15), carry(15));
-    AS16: fulladder port map(datain_a(16), b_num(16), carry(15), dataout(16), carry(16));
-    AS17: fulladder port map(datain_a(17), b_num(17), carry(16), dataout(17), carry(17));
-    AS18: fulladder port map(datain_a(18), b_num(18), carry(17), dataout(18), carry(18));
-    AS19: fulladder port map(datain_a(19), b_num(19), carry(18), dataout(19), carry(19));
-    AS20: fulladder port map(datain_a(20), b_num(20), carry(19), dataout(20), carry(20));
-    AS21: fulladder port map(datain_a(21), b_num(21), carry(20), dataout(21), carry(21));
-    AS22: fulladder port map(datain_a(22), b_num(22), carry(21), dataout(22), carry(22));
-    AS23: fulladder port map(datain_a(23), b_num(23), carry(22), dataout(23), carry(23));
-    AS24: fulladder port map(datain_a(24), b_num(24), carry(23), dataout(24), carry(24));
-    AS25: fulladder port map(datain_a(25), b_num(25), carry(24), dataout(25), carry(25));
-    AS26: fulladder port map(datain_a(26), b_num(26), carry(25), dataout(26), carry(26));
-    AS27: fulladder port map(datain_a(27), b_num(27), carry(26), dataout(27), carry(27));
-    AS28: fulladder port map(datain_a(28), b_num(28), carry(27), dataout(28), carry(28));
-    AS29: fulladder port map(datain_a(29), b_num(29), carry(28), dataout(29), carry(29));
-    AS30: fulladder port map(datain_a(30), b_num(30), carry(29), dataout(30), carry(30));
-    AS31: fulladder port map(datain_a(31), b_num(31), carry(30), dataout(31), carry(31));
-
   if (add_sub = '0') then
     dataout <= datain_a(31 downto 0) + datain_b(31 downto 0);
     temp <= ('0' & datain_a(31 downto 0)) and ('0' & datain_b(31 downto 0));
     co <= temp(32);
-  end if;
-
   if (add_sub = '1') then
     dataout <= datain_a(31 downto 0) - datain_b(31 downto 0);
     co <= ('0' & datain_a(31 downto 0)) and ('0' & datain_b(31 downto 0));
-  end if;
 
 end architecture calc;
 
@@ -226,11 +178,4 @@ architecture shifter of shift_register is
 
 begin
 -- insert code here.
-  if (dir = '0') then
-    dataout <= sll          -- shift_left(signed(datain,shamt));
-  end if;
-
-  if (dir = '1') then
-    dataout <= srl          -- shift_right(signed(datain,shamt));
-  end if;
 end architecture shifter;

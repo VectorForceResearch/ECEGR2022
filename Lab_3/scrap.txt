@@ -1,0 +1,12 @@
+port(bitin: in std_logic;
+  enout: in std_logic;
+  writein: in std_logic;
+  bitout: out std_logic;
+  bitin16: in std_logic;
+  enout16: in std_logic;
+  writein16: in std_logic;
+  bitout16: out std_logic;
+  bitin32: in std_logic;
+  enout32: in std_logic;
+  writein32: in std_logic;
+  bitout32: out std_logic);
