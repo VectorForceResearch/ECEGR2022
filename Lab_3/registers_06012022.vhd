@@ -248,12 +248,12 @@ process(VEC, dir, shamt, datain)
 begin
 
 case VEC is
-  when "001" =>   dataout <= (datain(30 downto 0) & '0');
-  when "010" =>   dataout <= (datain(29 downto 0) & '00');
-  when "011" =>   dataout <= (datain(28 downto 0) & '000');
-  when "101" =>   dataout <= ('0' & datain(31 downto 1));
-  when "110" =>   dataout <= ('00' & datain(31 downto 2));
-  when "111" =>   dataout <= ('000' & datain(31 downto 3));
+  when "001" =>   dataout <= (datain(30 downto 0) & "0");
+  when "010" =>   dataout <= (datain(29 downto 0) & "00");
+  when "011" =>   dataout <= (datain(28 downto 0) & "000");
+  when "101" =>   dataout <= ("0" & datain(31 downto 1));
+  when "110" =>   dataout <= ("00" & datain(31 downto 2));
+  when "111" =>   dataout <= ("000" & datain(31 downto 3));
   when others =>  dataout <= (datain(31 downto 0));
 end case;
 
