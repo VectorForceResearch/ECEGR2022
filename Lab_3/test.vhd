@@ -209,6 +209,7 @@ begin
 info <= (dir & shamt(1 downto 0));
 
 process(info, dir, shamt, datain)
+
 begin
 if (info = "001") then -- shamt = "00001"
 dataout <= (datain(30 downto 0) & '0'); -- Shifts to the left by one bit
