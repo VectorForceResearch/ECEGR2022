@@ -93,15 +93,9 @@ signal enoutAll: std_logic_vector(3 DOWNTO 0);
 signal writeInFromCat: std_logic_vector(2 DOWNTO 0);
 signal writeInAll: std_logic_vector(3 DOWNTO 0);
 
-SIGNAL enable: STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL enoutSignal: std_logic_vector(2 DOWNTO 0);
-
-SIGNAL writing: STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL enableWrite: std_logic_vector(2 DOWNTO 0);
-
 begin
 enoutFromCat <= (enout32 & enout16 & enout8);
-enableWrite <= (writein32 & writein16 & writein8);
+writeInFromCat <= (writein32 & writein16 & writein8);
 
 enoutAll <=
  "1110" when enoutFromCat = "110" else
@@ -120,8 +114,6 @@ writeInAll <=
   rg8_b: entity work.register8(memmy) port map (datain(15 downto 8), enoutAll(1), writeInAll(1), dataout(15 downto 8));
   rg8_c: entity work.register8(memmy) port map (datain(23 downto 16), enoutAll(2), writeInAll(2), dataout(23 downto 16));
   rg8_d: entity work.register8(memmy) port map (datain(31 downto 24), enoutAll(3), writeInAll(3), dataout(31 downto 24));
-  --rg16: work.register8(memmy) port map(rg8_b & rg8_a, enout, writein, rg8_b & rg8_a);
-  --rg32: work.register8(memmy) port map(rg16 & rg8_b & rg8_a, enout, writein, rg16 & rg8_b & rg8_a);
 
 end architecture biggermem;
 
@@ -159,7 +151,6 @@ port( datain_a: in std_logic_vector(31 downto 0);
 	dataout: out std_logic_vector(31 downto 0);
 	co: out std_logic);
 end entity adder_subtracter;
-
 
 architecture calc of adder_subtracter is
 component fulladder
