@@ -71,10 +71,10 @@ Use ieee.numeric_std.all;
 Use ieee.std_logic_unsigned.all;
 
 entity register32 is
-  port(datain: in std_logic_vector(31 downto 0);
-  	 enout32,enout16,enout8: in std_logic;
- 		 writein32, writein16, writein8: in std_logic;
- 		 dataout: out std_logic_vector(31 downto 0));
+  port( datain: in std_logic_vector(31 downto 0);
+  	    enout32,enout16,enout8: in std_logic;
+ 		writein32, writein16, writein8: in std_logic;
+ 		dataout: out std_logic_vector(31 downto 0));
 end entity register32;
 
 architecture biggermem of register32 is
@@ -82,10 +82,10 @@ architecture biggermem of register32 is
   -- so you can use it below
 
   component register8
- 	  port(datain: in std_logic_vector(7 downto 0);
- 	     enout:  in std_logic;
- 	     writein: in std_logic;
- 	     dataout: out std_logic_vector(7 downto 0));
+ 	  port( datain: in std_logic_vector(7 downto 0);
+ 	        enout:  in std_logic;
+ 	        writein: in std_logic;
+ 	        dataout: out std_logic_vector(7 downto 0));
   end component;
 
 signal enoutFromCat: STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -146,21 +146,22 @@ Use ieee.std_logic_unsigned.all;
 
 entity adder_subtracter is
 port( datain_a: in std_logic_vector(31 downto 0);
-	datain_b: in std_logic_vector(31 downto 0);
-	add_sub: in std_logic;
-	dataout: out std_logic_vector(31 downto 0);
-	co: out std_logic);
+      datain_b: in std_logic_vector(31 downto 0);
+      add_sub: in std_logic;
+      dataout: out std_logic_vector(31 downto 0);
+      co: out std_logic);
 end entity adder_subtracter;
 
 architecture calc of adder_subtracter is
 component fulladder
     port (a : in std_logic;
-               b : in std_logic;
-               cin : in std_logic;
-               sum : out std_logic;
-               carry : out std_logic
+          b : in std_logic;
+          cin : in std_logic;
+          sum : out std_logic;
+          carry : out std_logic
          );
 end component;
+
 SIGNAL b_num: std_logic_vector(31 DOWNTO 0);
 SIGNAL carry: std_logic_vector (32 DOWNTO 0);
 
