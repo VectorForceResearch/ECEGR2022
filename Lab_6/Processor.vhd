@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 --
--- LAB #6 - Processor 
+-- LAB #6 - Processor
 --
 --------------------------------------------------------------------------------
 library IEEE;
@@ -36,10 +36,10 @@ architecture holistic of Processor is
 		     Zero: out std_logic;
 		     ALUResult: out std_logic_vector(31 downto 0) );
 	end component;
-	
+
 	component Registers
-	    Port(ReadReg1: in std_logic_vector(4 downto 0); 
-                 ReadReg2: in std_logic_vector(4 downto 0); 
+	    Port(ReadReg1: in std_logic_vector(4 downto 0);
+                 ReadReg2: in std_logic_vector(4 downto 0);
                  WriteReg: in std_logic_vector(4 downto 0);
 		 WriteData: in std_logic_vector(31 downto 0);
 		 WriteCmd: in std_logic;
@@ -54,22 +54,22 @@ architecture holistic of Processor is
 		 DataOut: out std_logic_vector(31 downto 0));
 	end component;
 
-	component RAM 
+	component RAM
 	    Port(Reset:	  in std_logic;
-		 Clock:	  in std_logic;	 
+		 Clock:	  in std_logic;
 		 OE:      in std_logic;
 		 WE:      in std_logic;
 		 Address: in std_logic_vector(29 downto 0);
 		 DataIn:  in std_logic_vector(31 downto 0);
 		 DataOut: out std_logic_vector(31 downto 0));
 	end component;
-	
+
 	component BusMux2to1
 		Port(selector: in std_logic;
 		     In0, In1: in std_logic_vector(31 downto 0);
 		     Result: out std_logic_vector(31 downto 0) );
 	end component;
-	
+
 	component ProgramCounter
 	    Port(Reset: in std_logic;
 		 Clock: in std_logic;
@@ -87,5 +87,10 @@ architecture holistic of Processor is
 
 begin
 	-- Add your code here
-end holistic;
 
+
+
+
+
+	
+end holistic;

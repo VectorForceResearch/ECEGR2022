@@ -17,6 +17,20 @@ end entity BusMux2to1;
 architecture selection of BusMux2to1 is
 begin
 -- Add your code here
+
+  BusMuxSelProc: process(selector) is
+
+  begin
+    if Selector = '0' then
+      Result <= In0;
+    end if;
+
+    if Selector = '1' then
+      Result <= In1;
+    end if;
+
+	end process BusMemSelProc;
+
 end architecture selection;
 
 --------------------------------------------------------------------------------
@@ -43,6 +57,16 @@ end Control;
 architecture Boss of Control is
 begin
 -- Add your code here
+
+  ControlProc: process(clk, funct3, funct7)
+
+  if falling_edge(clk) then
+  -- code here should read the incoming combo of
+  -- opcode, func3, func7 and determine one of the outputs
+	-- I see this like somthing that goes into the Processor.vhd
+
+  end if;
+
 
 end Boss;
 
